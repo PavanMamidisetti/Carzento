@@ -1,6 +1,17 @@
+import { getAssetUrl } from '../utils/assetHelper';
+
 // ── Real Indian car market data with dedicated images ──────
 
-export const NEW_CARS = [
+const resolveImages = (list) =>
+  list.map((item) => ({
+    ...item,
+    ...(item.image ? { image: getAssetUrl(item.image) } : {}),
+    ...(item.img ? { img: getAssetUrl(item.img) } : {}),
+    ...(item.img1 ? { img1: getAssetUrl(item.img1) } : {}),
+    ...(item.img2 ? { img2: getAssetUrl(item.img2) } : {}),
+  }));
+
+export const NEW_CARS = resolveImages([
   {
     id: 1,
     name: 'Hyundai Creta',
@@ -154,9 +165,9 @@ export const NEW_CARS = [
       transmission: '6-speed MT / 6-speed AT',
     },
   },
-];
+]);
 
-export const MOST_USED_CARS = [
+export const MOST_USED_CARS = resolveImages([
   {
     id: 101,
     name: 'Maruti Brezza (2022)',
@@ -355,16 +366,16 @@ export const MOST_USED_CARS = [
       transmission: '6-Speed MT / AT',
     },
   },
-];
+]);
 
-export const NEW_LAUNCHES = [
+export const NEW_LAUNCHES = resolveImages([
   { id: 1, name: 'Tata Curvv', price: '₹10.00 - 19.00 L', date: 'Sep 2026', image: '/tata-curvv.jpg', highlight: 'Coupe SUV Design' },
   { id: 2, name: 'Mahindra BE 6', price: '₹18.90 - 26.90 L', date: 'Aug 2026', image: '/mahindra-thar.jpg', highlight: 'Born Electric Platform' },
   { id: 3, name: 'Hyundai Alcazar 2026', price: '₹16.77 - 21.28 L', date: 'Jul 2026', image: '/hyundai-creta.jpg', highlight: '6/7 Seater Refresh' },
   { id: 4, name: 'Maruti eVX', price: '₹15.00 - 20.00 L', date: 'Oct 2026', image: '/maruti-brezza.jpg', highlight: 'Maruti\'s First EV' },
   { id: 5, name: 'Kia EV6 GT', price: '₹60.97 L', date: 'Sep 2026', image: '/kia-seltos.jpg', highlight: '585 hp Performance EV' },
   { id: 6, name: 'Toyota Urban Cruiser EV', price: '₹12.00 - 18.00 L', date: 'Nov 2026', image: '/hyundai-venue.jpg', highlight: 'Electric Compact SUV' },
-];
+]);
 
 export const UPCOMING_CARS = [
   { id: 1, name: 'Tata Sierra', expected: 'Q1 2027', priceEst: '₹12.00 - 18.00 L', type: 'SUV', status: 'Testing' },
@@ -377,14 +388,14 @@ export const UPCOMING_CARS = [
   { id: 8, name: 'MG Windsor EV Max', expected: 'Q1 2027', priceEst: '₹20.00 - 28.00 L', type: 'Electric', status: 'Confirmed' },
 ];
 
-export const ELECTRIC_CARS = [
+export const ELECTRIC_CARS = resolveImages([
   { id: 1, name: 'Tata Nexon EV', price: '₹14.74 - 19.94 L', range: '465 km', battery: '40.5 kWh', image: '/tata-nexon.jpg' },
   { id: 2, name: 'MG ZS EV', price: '₹18.98 - 25.20 L', range: '461 km', battery: '50.3 kWh', image: '/mg-hector.jpg' },
   { id: 3, name: 'Tata Tiago EV', price: '₹7.99 - 11.99 L', range: '315 km', battery: '24 kWh', image: '/tata-harrier.jpg' },
   { id: 4, name: 'Mahindra XUV400', price: '₹15.49 - 19.19 L', range: '456 km', battery: '39.4 kWh', image: '/mahindra-thar.jpg' },
   { id: 5, name: 'BYD Atto 3', price: '₹24.99 - 33.99 L', range: '521 km', battery: '60.48 kWh', image: '/kia-seltos.jpg' },
   { id: 6, name: 'Hyundai Ioniq 5', price: '₹44.95 - 46.05 L', range: '631 km', battery: '72.6 kWh', image: '/hyundai-creta.jpg' },
-];
+]);
 
 export const POPULAR_BRANDS = [
   { id: 1, name: 'Maruti Suzuki', models: 24, color: '#e01f26' },
@@ -421,14 +432,14 @@ export const VIDEOS = [
   { id: 6, title: 'Kia EV6 GT Performance Test', duration: '20:05', views: '750K', channel: 'Carzento Reviews', date: '2 weeks ago' },
 ];
 
-export const CAR_IMAGES = [
+export const CAR_IMAGES = resolveImages([
   { id: 1, car: 'Hyundai Creta', count: 48, image: '/hyundai-creta.jpg' },
   { id: 2, car: 'Tata Nexon', count: 52, image: '/tata-nexon.jpg' },
   { id: 3, car: 'Mahindra Thar', count: 65, image: '/mahindra-thar.jpg' },
   { id: 4, car: 'Kia Seltos', count: 44, image: '/kia-seltos.jpg' },
   { id: 5, car: 'Tata Harrier', count: 38, image: '/tata-harrier.jpg' },
   { id: 6, car: 'MG Hector', count: 41, image: '/mg-hector.jpg' },
-];
+]);
 
 export const CAR_LOANS = [
   { bank: 'SBI', rate: '8.50%', tenure: 'Up to 7 years', processing: '₹1,000 - ₹10,000' },
@@ -439,23 +450,23 @@ export const CAR_LOANS = [
   { bank: 'Kotak Mahindra', rate: '8.95%', tenure: 'Up to 5 years', processing: '₹3,000 - ₹6,000' },
 ];
 
-export const COMPARE_PAIRS = [
+export const COMPARE_PAIRS = resolveImages([
   { car1: 'Hyundai Creta', car2: 'Kia Seltos', img1: '/hyundai-creta.jpg', img2: '/kia-seltos.jpg', price1: '₹11.00 L', price2: '₹10.90 L' },
   { car1: 'Tata Nexon', car2: 'Maruti Brezza', img1: '/tata-nexon.jpg', img2: '/maruti-brezza.jpg', price1: '₹8.10 L', price2: '₹8.34 L' },
   { car1: 'Mahindra Thar', car2: 'Force Gurkha', img1: '/mahindra-thar.jpg', img2: '/mg-hector.jpg', price1: '₹11.35 L', price2: '₹16.75 L' },
   { car1: 'Tata Harrier', car2: 'MG Hector', img1: '/tata-harrier.jpg', img2: '/mg-hector.jpg', price1: '₹15.49 L', price2: '₹14.72 L' },
-];
+]);
 
-export const CAR_OFFERS = [
+export const CAR_OFFERS = resolveImages([
   { id: 1, car: 'Maruti Swift', offer: 'Up to ₹65,000 Off', type: 'Cash + Exchange', valid: 'Till Sep 2026', image: '/maruti-swift.jpg' },
   { id: 2, car: 'Hyundai i20', offer: 'Up to ₹50,000 Off', type: 'Cash + Accessories', valid: 'Till Sep 2026', image: '/hyundai-i20.jpg' },
   { id: 3, car: 'Tata Altroz', offer: 'Up to ₹45,000 Off', type: 'Exchange Bonus', valid: 'Till Oct 2026', image: '/tata-nexon.jpg' },
   { id: 4, car: 'Kia Sonet', offer: 'Up to ₹80,000 Off', type: 'Cash + Exchange', valid: 'Till Sep 2026', image: '/kia-seltos.jpg' },
   { id: 5, car: 'MG Astor', offer: 'Up to ₹1.2 Lakh Off', type: 'Cash Discount', valid: 'Till Oct 2026', image: '/mg-hector.jpg' },
   { id: 6, car: 'Honda City', offer: 'Up to ₹55,000 Off', type: 'Cash + Loyalty', valid: 'Till Sep 2026', image: '/honda-city.jpg' },
-];
+]);
 
-export const POPULAR_CARS = [
+export const POPULAR_CARS = resolveImages([
   { id: 1, name: 'Hyundai Creta', searches: '1.2M', price: '₹11.00 L onwards', image: '/hyundai-creta.jpg' },
   { id: 2, name: 'Tata Nexon', searches: '1.1M', price: '₹8.10 L onwards', image: '/tata-nexon.jpg' },
   { id: 3, name: 'Maruti Brezza', searches: '980K', price: '₹8.34 L onwards', image: '/maruti-brezza.jpg' },
@@ -464,4 +475,4 @@ export const POPULAR_CARS = [
   { id: 6, name: 'Hyundai Venue', searches: '810K', price: '₹7.94 L onwards', image: '/hyundai-venue.jpg' },
   { id: 7, name: 'Tata Harrier', searches: '790K', price: '₹15.49 L onwards', image: '/tata-harrier.jpg' },
   { id: 8, name: 'MG Hector', searches: '750K', price: '₹14.72 L onwards', image: '/mg-hector.jpg' },
-];
+]);

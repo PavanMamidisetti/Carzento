@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { NEW_CARS } from '../data/cars';
 import { INDIAN_MARKET_CARS } from '../data/indianMarketCars';
+import { getAssetUrl } from '../utils/assetHelper';
 
 const FILTER_TABS = ['All Cars', 'Under ₹15 Lakh', 'Diesel', 'Petrol'];
 
@@ -156,7 +157,7 @@ export default function PopularCars({ onSelectCar }) {
               {/* Car Image with Badges */}
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/5">
                 <img
-                  src={car.image}
+                  src={getAssetUrl(car.image)}
                   alt={car.name}
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   loading="lazy"

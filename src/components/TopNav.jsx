@@ -258,7 +258,7 @@ export default function TopNav({
           {/* ─── Left: Logo + Nav ─────────────────────────── */}
           <div className="flex items-center gap-8">
             {/* Brand Logo */}
-            <a href="/" className="flex items-center gap-2 shrink-0 group">
+            <a href={import.meta.env.BASE_URL || '/'} className="flex items-center gap-2 shrink-0 group">
               <div
                 className="h-7 w-7 rounded-[5px] flex items-center justify-center
                             group-hover:opacity-90 transition-colors"

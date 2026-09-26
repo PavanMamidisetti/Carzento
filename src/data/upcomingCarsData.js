@@ -1,9 +1,11 @@
+import { getAssetUrl } from '../utils/assetHelper';
+
 /**
  * Upcoming Cars in India (2024 - 2025 Launch Horizon)
  * Verified data across Tata Motors, Maruti Suzuki, Hyundai, Mahindra, Toyota, Kia, Honda, Volkswagen, and Skoda.
  */
 
-export const UPCOMING_CARS_DATA = [
+const RAW_UPCOMING_CARS_DATA = [
   {
     id: 'maruti-evx',
     name: 'Maruti Suzuki e-Vitara (eVX)',
@@ -165,3 +167,9 @@ export const UPCOMING_CARS_DATA = [
     image: '/kia-seltos.jpg',
   },
 ];
+
+export const UPCOMING_CARS_DATA = RAW_UPCOMING_CARS_DATA.map((car) => ({
+  ...car,
+  image: getAssetUrl(car.image),
+}));
+

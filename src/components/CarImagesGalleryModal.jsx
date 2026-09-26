@@ -11,6 +11,7 @@ import {
   Eye,
   SlidersHorizontal,
 } from 'lucide-react';
+import { getAssetUrl } from '../utils/assetHelper';
 
 const GALLERY_CARS = [
   {
@@ -249,7 +250,7 @@ export default function CarImagesGalleryModal({ isOpen, onClose }) {
               }}
             >
               <img
-                src={currentView.img}
+                src={getAssetUrl(currentView.img)}
                 alt={selectedCar.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -311,7 +312,7 @@ export default function CarImagesGalleryModal({ isOpen, onClose }) {
                       }`}
                     >
                       <div className="w-12 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-900 border border-white/10">
-                        <img src={v.img} alt={v.name} className="w-full h-full object-cover" />
+                        <img src={getAssetUrl(v.img)} alt={v.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="overflow-hidden">
                         <div className="text-xs font-bold text-neutral-200 truncate">
