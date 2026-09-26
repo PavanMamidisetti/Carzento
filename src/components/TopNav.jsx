@@ -309,9 +309,9 @@ export default function TopNav({
                 >
                   <button
                     onClick={(e) => {
-                      if (link === 'NEW CARS') {
-                        handleGoToSearch(e);
-                      }
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setActiveNav(activeNav === link ? null : link);
                     }}
                     className="text-[11.5px] font-bold tracking-[0.06em] transition-colors
                                whitespace-nowrap cursor-pointer relative pb-1"
@@ -725,6 +725,70 @@ export default function TopNav({
         </div>
       </nav>
 
+      {/* ─── Mobile Horizontal Quick Category Bar ─────── */}
+      <div
+        className="md:hidden sticky top-14 z-30 flex items-center gap-2 overflow-x-auto px-4 py-2 border-b hide-scrollbar"
+        style={{
+          background: 'var(--color-card)',
+          borderColor: 'var(--color-border)',
+        }}
+      >
+        {navLinks.map((link) => (
+          <button
+            key={link}
+            type="button"
+            onClick={() => {
+              if (mobileMenuOpen && mobileExpandedCategory === link) {
+                setMobileMenuOpen(false);
+              } else {
+                setMobileExpandedCategory(link);
+                setMobileMenuOpen(true);
+              }
+            }}
+            className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+            style={{
+              background:
+                mobileMenuOpen && mobileExpandedCategory === link
+                  ? 'rgba(30, 165, 153, 0.22)'
+                  : 'rgba(255, 255, 255, 0.05)',
+              color:
+                mobileMenuOpen && mobileExpandedCategory === link
+                  ? 'var(--color-teal)'
+                  : 'var(--color-text)',
+              border: '1.5px solid',
+              borderColor:
+                mobileMenuOpen && mobileExpandedCategory === link
+                  ? 'var(--color-teal)'
+                  : 'var(--color-border)',
+            }}
+          >
+            <span>{link}</span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 transition-transform ${
+                mobileMenuOpen && mobileExpandedCategory === link
+                  ? 'rotate-180 text-[var(--color-teal)]'
+                  : 'opacity-70'
+              }`}
+            />
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => {
+            setMobileMenuOpen(false);
+            if (onOpenAIChatbot) onOpenAIChatbot();
+          }}
+          className="px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-colors flex items-center gap-1.5 cursor-pointer text-[var(--color-teal)] shadow-sm"
+          style={{
+            background: 'rgba(30, 165, 153, 0.15)',
+            border: '1.5px solid rgba(30, 165, 153, 0.4)',
+          }}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-[var(--color-teal)]" />
+          <span>AI Chatbot</span>
+        </button>
+      </div>
+
       {/* ─── Mobile Navigation Drawer ────────────────── */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -744,7 +808,7 @@ export default function TopNav({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-14 left-0 right-0 z-40 max-h-[calc(100vh-3.5rem)] overflow-y-auto md:hidden border-b shadow-2xl p-4 space-y-4"
+              className="fixed top-[102px] left-0 right-0 z-40 max-h-[calc(100vh-6.5rem)] overflow-y-auto md:hidden border-b shadow-2xl p-4 space-y-4"
               style={{
                 background: 'var(--color-card)',
                 borderColor: 'var(--color-border)',
