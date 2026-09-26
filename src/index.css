@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ─────────────────────────────────────── */
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-teal: #1ea599;
+  --color-teal-hover: #22b8aa;
+}
+
+/* ── Dark Theme (default) ─────────────────────────────── */
+
+:root,
+[data-theme="dark"] {
+  --color-base: #0b1118;
+  --color-card: #0d1821;
+  --color-input: #131d27;
+  --color-dock: #051119;
+  --color-search: #0a1c27;
+  --color-text: #ffffff;
+  --color-text-secondary: #94a3b8;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-hover-bg: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Light Theme ──────────────────────────────────────── */
+
+[data-theme="light"] {
+  --color-base: #f8fafc;
+  --color-card: #ffffff;
+  --color-input: #f1f5f9;
+  --color-dock: #f1f5f9;
+  --color-search: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+/* ── Automatic Theme Text Visibility Enhancements ──────── */
+
+[data-theme="light"] h1:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]),
+[data-theme="light"] h2:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]),
+[data-theme="light"] h3:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]),
+[data-theme="light"] h4:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]),
+[data-theme="light"] h5:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]),
+[data-theme="light"] h6:not([class*="text-teal"]):not([class*="text-emerald"]):not([class*="text-cyan"]) {
+  color: var(--color-text);
+}
+
+[data-theme="light"] .text-neutral-400 {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .text-neutral-500 {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .text-neutral-300 {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .text-neutral-200 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-neutral-100 {
+  color: #0f172a !important;
+}
+
+/* ── Base Reset ────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-base);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Focus ring reset ──────────────────────────────────── */
+
+input:focus,
+button:focus {
+  outline: none;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+/* ── Animations ────────────────────────────────────────── */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Hide native scrollbar on carousels ───────────────── */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
