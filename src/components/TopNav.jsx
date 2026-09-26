@@ -23,7 +23,9 @@ import {
   Scale,
   Tag,
   Star,
+  Menu,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../ThemeContext';
 import AuthModal from './AuthModal';
 import { INDIAN_MARKET_CARS } from '../data/indianMarketCars';
@@ -187,6 +189,21 @@ export default function TopNav({
   const [loggedInUser, setLoggedInUser] = useState(null);
   const navRef = useRef(null);
   const searchInputRef = useRef(null);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpandedCategory, setMobileExpandedCategory] = useState('NEW CARS');
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   /**
    * Navigates directly to the 'Search new cars' bar, focuses the input,
@@ -685,10 +702,277 @@ export default function TopNav({
                   <User className="h-[18px] w-[18px]" strokeWidth={1.8} />
                 </button>
               )}
+
+              {/* Mobile Hamburger Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-xl transition-colors cursor-pointer flex items-center justify-center"
+                style={{
+                  color: 'var(--color-text)',
+                  background: mobileMenuOpen ? 'var(--color-hover-bg)' : 'transparent',
+                }}
+                aria-label="Toggle Navigation Menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5 text-[var(--color-teal)]" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </button>
             </div>
           </div>
         </div>
       </nav>
+
+      {/* ─── Mobile Navigation Drawer ────────────────── */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+            />
+
+            {/* Mobile Drawer Panel */}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed top-14 left-0 right-0 z-40 max-h-[calc(100vh-3.5rem)] overflow-y-auto md:hidden border-b shadow-2xl p-4 space-y-4"
+              style={{
+                background: 'var(--color-card)',
+                borderColor: 'var(--color-border)',
+              }}
+            >
+              {/* Mobile Search Bar */}
+              <div className="relative">
+                <div
+                  className="flex items-center rounded-xl px-3 py-2 border transition-all"
+                  style={{
+                    background: 'var(--color-input)',
+                    borderColor: 'var(--color-border)',
+                  }}
+                >
+                  <Search className="h-4 w-4 mr-2 text-neutral-400 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Search new cars, models, brands..."
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    className="bg-transparent text-xs placeholder-neutral-400 border-none outline-none w-full"
+                    style={{ color: 'var(--color-text)' }}
+                  />
+                  {searchValue && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchValue('')}
+                      className="text-neutral-400 hover:text-white"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Mobile Search Results */}
+                {searchValue.trim() && (
+                  <div
+                    className="mt-2 rounded-xl border p-2 max-h-56 overflow-y-auto space-y-1"
+                    style={{
+                      background: 'var(--color-base)',
+                      borderColor: 'var(--color-border)',
+                    }}
+                  >
+                    {searchResults.slice(0, 5).map((car) => (
+                      <div
+                        key={car.id}
+                        onClick={() => {
+                          if (onSelectCar) onSelectCar(car);
+                          setMobileMenuOpen(false);
+                          setSearchValue('');
+                        }}
+                        className="flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-white/5"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-white">{car.name}</div>
+                          <div className="text-[10px] text-neutral-400">{car.bodyType} • {car.fuelTypes}</div>
+                        </div>
+                        <div className="text-xs font-bold text-[var(--color-teal)]">{car.priceRange}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Categories with Expandable Inside Features */}
+              <div className="space-y-2">
+                {navLinks.map((category) => {
+                  const isExpanded = mobileExpandedCategory === category;
+                  const items = subLinks[category] || [];
+
+                  return (
+                    <div
+                      key={category}
+                      className="rounded-2xl border overflow-hidden transition-colors"
+                      style={{
+                        background: 'var(--color-base)',
+                        borderColor: isExpanded ? 'rgba(30, 165, 153, 0.4)' : 'var(--color-border)',
+                      }}
+                    >
+                      {/* Category Header Button */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMobileExpandedCategory(isExpanded ? null : category)
+                        }
+                        className="w-full flex items-center justify-between p-3.5 text-left font-bold text-xs tracking-wider transition-colors cursor-pointer"
+                        style={{
+                          color: isExpanded ? 'var(--color-teal)' : 'var(--color-text)',
+                        }}
+                      >
+                        <span className="flex items-center gap-2">
+                          <Car className="w-4 h-4 text-[var(--color-teal)]" />
+                          <span>{category}</span>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                            style={{
+                              background: isExpanded ? 'rgba(30, 165, 153, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                              color: isExpanded ? 'var(--color-teal)' : 'var(--color-text-secondary)',
+                            }}
+                          >
+                            {items.length} Features
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform duration-200 ${
+                              isExpanded ? 'rotate-180 text-[var(--color-teal)]' : 'text-neutral-400'
+                            }`}
+                          />
+                        </div>
+                      </button>
+
+                      {/* Inside Features Accordion Body */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden border-t px-2 py-2 space-y-1"
+                            style={{ borderColor: 'var(--color-border)' }}
+                          >
+                            {items.map((item) => {
+                              const ItemIcon = item.icon || Car;
+                              return (
+                                <button
+                                  key={item.id}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setMobileMenuOpen(false);
+
+                                    if (item.id === 'find-new-cars') {
+                                      handleGoToSearch(e);
+                                    } else if (item.id === 'new-launches') {
+                                      if (onOpenNewLaunches) onOpenNewLaunches();
+                                    } else if (item.id === 'find-dealer') {
+                                      if (onOpenFindDealers) onOpenFindDealers();
+                                    } else if (item.id === 'upcoming-cars') {
+                                      if (onOpenUpcomingCars) onOpenUpcomingCars();
+                                    } else if (item.id === 'electric-cars') {
+                                      if (onOpenElectricCars) onOpenElectricCars();
+                                    } else if (item.id === 'images') {
+                                      if (onOpenCarImages) onOpenCarImages();
+                                    } else if (item.id === 'popular-brands') {
+                                      if (onOpenPopularBrands) onOpenPopularBrands();
+                                    } else if (item.id === 'compare-cars') {
+                                      if (onOpenAIChatbot) onOpenAIChatbot();
+                                    } else if (item.id === 'videos') {
+                                      if (onOpenCarImages) onOpenCarImages();
+                                    } else if (item.id === 'new-car-loan' || item.id === 'new-car-offers') {
+                                      if (onOpenFindDealers) onOpenFindDealers();
+                                    } else if (item.id === 'popular-cars') {
+                                      if (onSelectCar) onSelectCar(INDIAN_MARKET_CARS[0]);
+                                    }
+                                  }}
+                                  className="w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-colors hover:bg-white/5 cursor-pointer"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div
+                                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                                      style={{
+                                        background: item.badgeColor,
+                                        color: item.badgeTextColor,
+                                      }}
+                                    >
+                                      <ItemIcon className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                      <div
+                                        className="text-xs font-bold leading-tight"
+                                        style={{ color: 'var(--color-text)' }}
+                                      >
+                                        {item.label}
+                                      </div>
+                                      <div className="text-[10px] text-neutral-400 mt-0.5 line-clamp-1">
+                                        {item.subtitle}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <span
+                                    className="px-2 py-0.5 rounded text-[9.5px] font-bold shrink-0"
+                                    style={{
+                                      background: item.badgeColor,
+                                      color: item.badgeTextColor,
+                                    }}
+                                  >
+                                    {item.badge}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Mobile AI Chatbot Banner CTA */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenAIChatbot) onOpenAIChatbot();
+                }}
+                className="w-full flex items-center justify-between p-3.5 rounded-2xl cursor-pointer transition-all shadow-md"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(30, 165, 153, 0.25) 0%, rgba(13, 138, 128, 0.4) 100%)',
+                  border: '1px solid rgba(30, 165, 153, 0.5)',
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Sparkles className="w-5 h-5 text-[var(--color-teal)] animate-pulse" />
+                  <div className="text-left">
+                    <div className="text-xs font-black text-white">Carzento AI Assistant</div>
+                    <div className="text-[10px] text-neutral-300">Ask any automotive question instantly</div>
+                  </div>
+                </div>
+                <span className="text-xs font-bold text-[var(--color-teal)]">&rarr;</span>
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Auth Modal */}
       <AuthModal
