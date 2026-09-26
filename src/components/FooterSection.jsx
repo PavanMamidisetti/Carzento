@@ -75,15 +75,15 @@ export default function FooterSection({
               </div>
             ) : (
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-72">
-                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+                <div className="flex items-center gap-2.5 flex-1 sm:w-72 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 focus-within:border-[var(--color-teal)] transition-colors">
+                  <Mail className="w-4 h-4 text-neutral-400 shrink-0" />
                   <input
                     type="email"
                     required
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs bg-white/5 border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[var(--color-teal)]"
+                    className="w-full bg-transparent border-none outline-none text-xs text-white placeholder-neutral-500 focus:outline-none focus:ring-0 p-0"
                   />
                 </div>
                 <button
